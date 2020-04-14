@@ -205,10 +205,13 @@ def unPause():
         alreadyPaused = False
 
 def onePhoto():
+    
     global frame
+    fname=printer.getFile()
+   # print (fname)
     frame += 1
     s="{0:08d}".format(int(np.around(frame)))
-    fn = '/tmp/DuetLapse/IMG'+s+'.jpeg'
+    fn = '/tmp/DuetLapse/'+fname+'.'+s+'.jpeg'
 
     if ('usb' in camera): 
         if (camparms == ''):
@@ -257,13 +260,14 @@ def oneInterval():
 
 def postProcess():
     print()
+    fname=printer.getFile()
     print("Now making {0:d} frames into a video at 10 frames per second.".format(int(np.around(frame))))
     if (250 < frame): print("This can take a while...")
-    fn ='~/DuetLapse'+time.strftime('%m%d%y%H%M',time.localtime())+'.mp4'
+    fn ='~/'+fname+'.DuetLapse'+time.strftime('%m%d%y%H%M',time.localtime())+'.mp4'
     if (vidparms == ''):
-        cmd  = 'ffmpeg -r 10 -i /tmp/DuetLapse/IMG%08d.jpeg -vcodec libx264 -y -v 8 '+fn
+        cmd  = 'ffmpeg -r 10 -i /tmp/DuetLapse/'+fname+'.%08d.jpeg -vcodec libx264 -y -v 8 '+fn
     else:
-        cmd  = 'ffmpeg '+vidparms+' -i /tmp/DuetLapse/IMG%08d.jpeg '+fn
+        cmd  = 'ffmpeg '+vidparms+' -i /tmp/DuetLapse/'+fname+'.%08d.jpeg '+fn
     subprocess.call(cmd, shell=True)
     print('Video processing complete.')
     print('Video file is in home directory, named '+fn)
