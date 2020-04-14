@@ -292,8 +292,11 @@ timePriorPhoto = time.time()
 try: 
     while(1):
         time.sleep(.77)            # Intentionally not evenly divisible into one second. 
-        status=printer.getStatus()
-
+        try:
+            status=printer.getStatus()
+        except:
+            print("Could Not Connect") #Skips the current Frame without killing script
+            
         if (printerState == 0):     # Idle before print started. 
             if (dontwait):
                 oneInterval()
